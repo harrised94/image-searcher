@@ -55,10 +55,24 @@
 
         .search-box {
             width: 90%;
+            height: 50px;
+        }
+
+        .search-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
 
         .randomize {
             width: 10%;
+            background: none;
+            margin: 0;
+            
+        }
+
+        .material-symbols-outlined {
+            height: 30px;
         }
 
 
@@ -71,15 +85,19 @@
     <div class="row row-1">
         
         <h1>Search for any images</h1>
-        <input type="text" id="userInput" placeholder="Search images" class="search-box"> <span class="randomize"><button id="randomBtn"><img src="./assets/dice.svg" alt="icons8-dice-30" style="border: none"></button></span>
+        <div class="search-section">
+            <input type="text" id="userInput" placeholder="Search images" class="search-box"> 
+            <span class="randomize"><button id="randomBtn"><img src="./assets/dice.svg" alt="icons8-dice-30" class="material-symbols-outlined"></button></span>
+        </div>
+
         <label for="imgNumber">No. of images</label>
         <select name="number" id="imgNumber">
             <option value="1">1</option>
             <option value="5">5</option>
             <option value="10">10</option>
             <option value="15">15</option>
-            <option value="20">20</option>
-          </select>
+            <option selected="selected" value="20">20</option>
+        </select>
         <button id="searchBtn">Search</button>
     </div>
     <div class="row">
@@ -145,7 +163,7 @@ $(function(){
         .done(function(randomWord){    
             $('#userInput').val(randomWord);    // set the user input box to that word
         })
-        $('#searchBtn').click();
+        $('#searchBtn').click();            // Run the search automatically
     })
 }); // End main function
 
