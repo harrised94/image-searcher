@@ -29,19 +29,7 @@
             color: white;
             margin-bottom: 15px;
         }
-        #imgContainer {
-            margin: 30px 15px;
-            box-shadow:
-        inset 0 0 30px whitesmoke,
-        inset 10px 0 40px #f0f,
-        inset -10px 0 40px #0ff,
-        inset 10px 0 100px #f0f,
-        inset -10px 0 100px #0ff,
-        0 0 20px #fff,
-        -10px 0 40px #f0f,
-        10px 0 40px #0ff;
-        }
-
+       
         img {
             margin: 15px;
             box-shadow:
@@ -53,11 +41,24 @@
         0 0 20px #fff,
         -10px 0 40px #f0f,
         10px 0 40px #0ff;
-        transition: all 0.1s;
+        transition: all 0.3s;
         }
 
         img:hover { 
             transform: scale(2);
+        }
+
+        #searchBtn {
+            padding: 5px;
+            border: 1px solid white;
+        }
+
+        .search-box {
+            width: 90%;
+        }
+
+        .randomize {
+            width: 10%;
         }
 
 
@@ -70,7 +71,7 @@
     <div class="row row-1">
         
         <h1>Search for any images</h1>
-        <input type="text" id="userInput" placeholder="Search images"> <span><button id="randomBtn"><img src="https://i.ibb.co/wdkFMLr/icons8-dice-30.png" alt="icons8-dice-30" style="border: none"></button></span>
+        <input type="text" id="userInput" placeholder="Search images" class="search-box"> <span class="randomize"><button id="randomBtn"><img src="./assets/dice.svg" alt="icons8-dice-30" style="border: none"></button></span>
         <label for="imgNumber">No. of images</label>
         <select name="number" id="imgNumber">
             <option value="1">1</option>
@@ -144,6 +145,7 @@ $(function(){
         .done(function(randomWord){    
             $('#userInput').val(randomWord);    // set the user input box to that word
         })
+        $('#searchBtn').click();
     })
 }); // End main function
 
