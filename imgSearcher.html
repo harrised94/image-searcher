@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Searcher</title>
+
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    
+    <style>
+        body {
+            background: black;
+            color: white;
+        }
+        .row {
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .row-1 {
+            width: 50%;
+        }
+
+        input, button, select {
+            background: black;
+            color: white;
+            margin-bottom: 15px;
+        }
+        #imgContainer {
+            margin: 30px 15px;
+            box-shadow:
+        inset 0 0 30px whitesmoke,
+        inset 10px 0 40px #f0f,
+        inset -10px 0 40px #0ff,
+        inset 10px 0 100px #f0f,
+        inset -10px 0 100px #0ff,
+        0 0 20px #fff,
+        -10px 0 40px #f0f,
+        10px 0 40px #0ff;
+        }
+
+        img {
+            margin: 15px;
+            box-shadow:
+        inset 0 0 30px whitesmoke,
+        inset 10px 0 40px #f0f,
+        inset -10px 0 40px #0ff,
+        inset 10px 0 100px #f0f,
+        inset -10px 0 100px #0ff,
+        0 0 20px #fff,
+        -10px 0 40px #f0f,
+        10px 0 40px #0ff;
+        transition: all 0.1s;
+        }
+
+        img:hover { 
+            transform: scale(2);
+        }
+
+
+    </style>
+
+</head>
+<body>
+    <pre><code id="code"></code></pre>
+<div class="container">
+    <div class="row row-1">
+        
+        <h1>Search for any images</h1>
+        <input type="text" id="userInput" placeholder="Search images"> <span><button id="randomBtn"><img src="https://i.ibb.co/wdkFMLr/icons8-dice-30.png" alt="icons8-dice-30" style="border: none"></button></span>
+        <label for="imgNumber">No. of images</label>
+        <select name="number" id="imgNumber">
+            <option value="1">1</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="15">15</option>
+            <option value="20">20</option>
+          </select>
+        <button id="searchBtn">Search</button>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="imgContainer"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+$(function(){
+  
+    // API urls
+    var flickrApiUrl = "https://api.flickr.com/services/feeds/photos_public.gne?jsoncallback=?";
+    var randomWordUrl = "https://random-word-api.herokuapp.com/word"
+
+    // If enter key pressed on the userInput field, click the search button.
+    $("#userInput").keyup(function(event) {
+    if (event.keyCode === 13) {
+        $("#searchBtn").click();
+    }
+});
+    // On click of the search button, get the value of the user input
+    $('#searchBtn').click(function() {
+        $('#imgContainer').empty();                                 // Empty the current images
+        var userInput = $('#userInput').val();                      // get the value of the user input box
+        var imgNumber = $('#imgNumber').find(':selected').text();   // get the selected text of the drop down, set the img number to that
+        console.log(userInput) 
+
+        $.getJSON(flickrApiUrl, {                                   // Get the json data from api                                
+        tags: userInput,                                            // set tag as the user input
+        tagmode: "any",                                         
+        format: "json"
+   }).done(function(data) {
+        var i = 0;
+            //success
+            console.log(data);
+            $.each(data.items, function(index, item) {               // for each data item
+                                    //Create img html element, then set src attribute to item.media
+            var img = $('<img>',
+                        { id: i + 1,
+                        src: item.media.m
+                        })
+            
+            img.appendTo($('#imgContainer'))        //  and attach it to dom
+
+            if(index == imgNumber - 1) {
+                return false;
+            }
+
+        i++
+            })
+       
+        }).fail(function() {
+            //failure
+            alert("Ajax call failed.")
+        })
+    });
+
+    $('#randomBtn').click(function() {      // On click of random button
+        $.getJSON(randomWordUrl)            // Get the random word from the api
+        .done(function(randomWord){    
+            $('#userInput').val(randomWord);    // set the user input box to that word
+        })
+    })
+}); // End main function
+
+   
+    
+  
+</script>
+
+</body>
+</html>
